@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ACROZELA Customer Database - Professional Tool for managing customer records, sales, and contact information with Indian Currency support.">
+    <meta name="keywords" content="Customer Database, ACROZELA, CRM Tool, Business Manager, Indian Currency CRM">
+    <title>ACROZELA CUSTOMER DATABASE</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-blue: #0056b3;
+            --lite-blue-bg: #f0f7ff;
+            --card-bg: #ffffff;
+            --border-color: #d1e3f8;
+            --text-dark: #2c3e50;
+            --text-lite: #5a6c7d;
+            --success: #28a745;
+            --danger: #dc3545;
+            --accent: #e3f2fd;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--lite-blue-bg);
+            color: var(--text-dark);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        header {
+            background: var(--card-bg);
+            padding: 1.5rem 5%;
+            border-bottom: 2px solid var(--border-color);
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        header h1 {
+            color: var(--primary-blue);
+            font-weight: 800;
+            letter-spacing: 1px;
+            font-size: 1.8rem;
+        }
+
+        /* Main Container */
+        .container {
+            flex: 1;
+            width: 95%;
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 15px;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+        }
+
+        .stat-card h3 {
+            font-size: 0.9rem;
+            color: var(--text-lite);
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card p {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+        }
+
+        /* Form Section */
+        .action-bar {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 2rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(0,86,179,0.1);
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 1rem;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.3s;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background: var(--primary-blue);
+            color: white;
+            flex: 2;
+        }
+
+        .btn-secondary {
+            background: var(--success);
+            color: white;
+            flex: 1;
+        }
+
+        .btn:hover { opacity: 0.9; }
+
+        /* Table Section */
+        .table-container {
+            background: var(--card-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            overflow-x: auto;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            min-width: 800px;
+        }
+
+        th {
+            background: var(--accent);
+            color: var(--primary-blue);
+            padding: 15px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.85rem;
+            vertical-align: top;
+        }
+
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .status-active { background: #e8f5e9; color: #2e7d32; }
+        .status-pending { background: #fff3e0; color: #ef6c00; }
+
+        .delete-btn {
+            color: var(--danger);
+            cursor: pointer;
+            font-weight: 600;
+            border: none;
+            background: none;
+        }
+
+        /* Empty State */
+        .empty-state {
+            padding: 60px;
+            text-align: center;
+            color: var(--text-lite);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--card-bg);
+            border-top: 2px solid var(--border-color);
+            padding: 2rem;
+            text-align: center;
+            margin-top: auto;
+        }
+
+        footer p {
+            font-weight: 700;
+            color: var(--text-lite);
+            letter-spacing: 1px;
+            font-size: 0.8rem;
+        }
+
+        /* Mobile Response */
+        @media (max-width: 768px) {
+            .table-container { border: none; background: transparent; overflow-x: hidden; }
+            table, thead, tbody, th, td, tr { display: block; }
+            thead tr { display: none; }
+            tr { background: white; margin-bottom: 1rem; border: 1px solid var(--border-color); border-radius: 12px; padding: 10px; }
+            td { display: flex; justify-content: space-between; padding: 8px 10px; border-bottom: 1px solid #eee; text-align: right; min-width: 0; }
+            td::before { content: attr(data-label); font-weight: 700; color: var(--primary-blue); }
+            .btn-group { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>ACROZELA CUSTOMER DATABASE</h1>
+    </header>
+
+    <div class="container">
+        <!-- Dashboard Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Total Customers</h3>
+                <p id="totalCount">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>Total Revenue</h3>
+                <p id="totalRevenue">₹ 0.00</p>
+            </div>
+            <div class="stat-card">
+                <h3>Active Records</h3>
+                <p id="activeCount">0</p>
+            </div>
+        </div>
+
+        <!-- Tool Builder / Input Section -->
+        <div class="action-bar">
+            <h2 style="margin-bottom: 1.5rem; font-size: 1.1rem; color: var(--primary-blue); text-transform: uppercase;">Customer Record Entry</h2>
+            <form id="customerForm" class="form-grid">
+                <input type="text" id="custName" placeholder="Customer Full Name" required>
+                <input type="email" id="custEmail" placeholder="Email Address" required>
+                <input type="tel" id="custPhone" placeholder="Phone Number" required>
+                <input type="number" id="custAmount" placeholder="Purchase Amount (₹)" required>
+                <input type="text" id="custAddress" placeholder="Full Address" class="full-width" required>
+                <select id="custStatus">
+                    <option value="Active">Active</option>
+                    <option value="Pending">Pending</option>
+                </select>
+                <div class="btn-group full-width">
+                    <button type="submit" class="btn btn-primary">Save to Database</button>
+                    <button type="button" class="btn btn-secondary" onclick="exportToExcel()">Export Excel</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Database List -->
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Customer Name</th>
+                        <th>Contact Info</th>
+                        <th>Address</th>
+                        <th>Status</th>
+                        <th>Amount (INR)</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="customerList">
+                    <!-- Dynamic Data -->
+                </tbody>
+            </table>
+            <div id="emptyMsg" class="empty-state">
+                DATABASE IS CURRENTLY EMPTY
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>DEVELOPED BY ACROZELA TECH</p>
+    </footer>
+
+    <script>
+        // Database State
+        let customers = JSON.parse(localStorage.getItem('acrozela_v2_db')) || [];
+
+        const customerForm = document.getElementById('customerForm');
+        const customerList = document.getElementById('customerList');
+        const emptyMsg = document.getElementById('emptyMsg');
+
+        // Currency Formatter
+        const formatter = new Intl.NumberFormat('en-IN', {
+            style: 'currency',
+            currency: 'INR',
+        });
+
+        // Form Handling
+        customerForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const newCustomer = {
+                id: Date.now(),
+                name: document.getElementById('custName').value,
+                email: document.getElementById('custEmail').value,
+                phone: document.getElementById('custPhone').value,
+                address: document.getElementById('custAddress').value,
+                amount: parseFloat(document.getElementById('custAmount').value),
+                status: document.getElementById('custStatus').value
+            };
+
+            customers.push(newCustomer);
+            saveAndRefresh();
+            customerForm.reset();
+        });
+
+        function deleteCustomer(id) {
+            if(confirm('Permanently delete this record?')) {
+                customers = customers.filter(c => c.id !== id);
+                saveAndRefresh();
+            }
+        }
+
+        function saveAndRefresh() {
+            localStorage.setItem('acrozela_v2_db', JSON.stringify(customers));
+            renderData();
+        }
+
+        function renderData() {
+            customerList.innerHTML = '';
+            
+            if (customers.length === 0) {
+                emptyMsg.style.display = 'block';
+                updateStats(0, 0, 0);
+                return;
+            }
+
+            emptyMsg.style.display = 'none';
+            let revenue = 0;
+            let active = 0;
+
+            customers.forEach(cust => {
+                revenue += cust.amount;
+                if(cust.status === 'Active') active++;
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td data-label="Name" style="font-weight:600">${cust.name}</td>
+                    <td data-label="Contact">${cust.email}<br><small>${cust.phone}</small></td>
+                    <td data-label="Address" style="max-width:200px; font-size: 0.8rem;">${cust.address}</td>
+                    <td data-label="Status">
+                        <span class="status-badge ${cust.status === 'Active' ? 'status-active' : 'status-pending'}">
+                            ${cust.status}
+                        </span>
+                    </td>
+                    <td data-label="Amount" style="font-weight:700">${formatter.format(cust.amount)}</td>
+                    <td data-label="Action">
+                        <button class="delete-btn" onclick="deleteCustomer(${cust.id})">Delete</button>
+                    </td>
+                `;
+                customerList.appendChild(tr);
+            });
+
+            updateStats(customers.length, revenue, active);
+        }
+
+        function updateStats(total, rev, active) {
+            document.getElementById('totalCount').innerText = total;
+            document.getElementById('totalRevenue').innerText = formatter.format(rev);
+            document.getElementById('activeCount').innerText = active;
+        }
+
+        // Export to CSV Functionality
+        function exportToExcel() {
+            if (customers.length === 0) {
+                alert("No data available to export.");
+                return;
+            }
+
+            let csvRows = [];
+            const headers = ['Customer Name', 'Email', 'Phone', 'Address', 'Status', 'Amount (INR)'];
+            csvRows.push(headers.join(','));
+
+            for (const cust of customers) {
+                const row = [
+                    `"${cust.name}"`,
+                    `"${cust.email}"`,
+                    `"${cust.phone}"`,
+                    `"${cust.address.replace(/"/g, '""')}"`, // Escape quotes in address
+                    `"${cust.status}"`,
+                    cust.amount
+                ];
+                csvRows.push(row.join(','));
+            }
+
+            const csvString = csvRows.join('\n');
+            const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a");
+            const url = URL.createObjectURL(blob);
+            
+            link.setAttribute("href", url);
+            link.setAttribute("download", "ACROZELA_Customer_Data.csv");
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        window.onload = renderData;
+    </script>
+</body>
+</html>
